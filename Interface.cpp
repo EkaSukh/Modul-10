@@ -97,16 +97,16 @@ void Interface::LogIn(Chat& cht)
 	std::string pass_inp;
 	std::cin >> pass_inp;
 
-	std::cout << "Call of GetUser\n";
+	//std::cout << "Call of GetUser\n";
 	//приватный указатель интерфейса указывает на signed in user
 
 	active_user = nullptr;
 	if (!active_user)
 	{
-		std::cout << "Pointer of active user is nullptr.\n";
+		//std::cout << "Pointer of active user is nullptr.\n";
 		
 		active_user = cht.GetUser(lg_inp);
-		if (lg_inp->checkPass(pass_inp))
+		if (active_user->checkPass(pass_inp))
 		{
 			std::cout << "You have successfully signed in.\n\n";
 			LoggedIn = true;
@@ -137,8 +137,8 @@ bool Interface::StartChat(Chat& cht)
 	std::cout << "You may choose an option:\n";
 	std::cout << "1 To send a message to all other users\n";
 	std::cout << "2 To send a message to a selected user\n";
-	std::cout << "3 To read a messages for all\n";
-	std::cout << "4 To read personal messages \n";
+	std::cout << "3 To read a messages from all users\n";
+	std::cout << "4 To read a personal message \n";
 	std::cout << "5 To go to main menu\n\n";
 
 	
@@ -155,19 +155,17 @@ bool Interface::StartChat(Chat& cht)
 	switch (input)
 	{
 	case 1: {
-		std::cout << "Enter the text:\n";
+		std::cout << "Enter the text (enter # to finish the message):\n";
 		std::string inp_text;
+		
 		std::cin >> inp_text;
-		//getline(std::cin, inp_text);//и сколько она будет считывать?
+		
+
 		std::string from = (active_user->getName());
 		std::string to = "all";
 		Message fresh(to, from, inp_text);
 		cht.Add_message_to_all(fresh);
 
-		//Для отладки
-		std::cout << "\nLets see changes:\n";
-		cht.ChatState(active_user);
-		
 		return true;
 	}
 
@@ -180,17 +178,19 @@ bool Interface::StartChat(Chat& cht)
 
 		std::string from = (active_user->getName());
 
-		std::cout << "Enter the text:\n";
+		std::cout << "Enter the text(enter # to finish the message):\n";
 		std::string inp_text;
 		std::cin >> inp_text;
-		//getline(std::cin, inp_text);//и сколько она будет считывать?
-				
-
+		/*char ch;
+		std::cin.get(ch);
+		while (ch != '#')
+			inp_text += ch;*/
+		
 		Message fresh(to, from, inp_text);
 
 		//процедура нахождения именной нитки
-		std::cout << "Adding message to recepients thread\n";
-		std::shared_ptr <User> recipient_user = cht.GetUser_by_name(to);
+		std::cout << "Adding message to a recepients thread\n";
+		User* recipient_user = cht.GetUser_by_name(to);
 		if (recipient_user && cht.FindUser_by_name(to))
 		{
 			recipient_user->Add_msg_to_my_collection(fresh);
@@ -199,8 +199,7 @@ bool Interface::StartChat(Chat& cht)
 		else
 			std::cout << "Can Not Find the user.\n";
 
-		std::cout << "\nLets see changes:\n";
-		cht.ChatState(active_user);
+		
 
 		return true;
 
@@ -211,7 +210,14 @@ bool Interface::StartChat(Chat& cht)
 		int n;
 		std::cin >> n;
 		
-		cht.Read_msg_in_all(n);
+		try {
+			cht.Read_msg_in_all(n);
+		}
+		catch(std::exception& e)
+		{
+			std::cout << e.what();
+		}
+		
 
 		return true;
 
@@ -222,9 +228,15 @@ bool Interface::StartChat(Chat& cht)
 		std::cout << "Enter a number of a message you want to read:\n";
 		int n;
 		std::cin >> n;
-		
-		active_user->Read_personal_msg(n);
 
+		try {
+			active_user->Read_personal_msg(n);
+		}
+
+		catch (std::exception& e)
+		{
+			std::cout << e.what();
+		}
 		return true;
 
 	}

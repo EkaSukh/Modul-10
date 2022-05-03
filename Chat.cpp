@@ -4,6 +4,7 @@
 #include "Message.h"
 #include "User.h"
 
+
 //работа с вектором юзеров
 
 //добавляем юзера в конец
@@ -106,6 +107,7 @@ bool Chat::Add_message_to_all(const Message& msg_all)
 	//а когда же функция будет принимать значения ложь?
 }
 
+/*
 void Chat::Show_AllMessages_sender()
 {
 	if (all_messages.empty())
@@ -123,6 +125,7 @@ void Chat::Show_AllMessages_sender()
 		}
 	}
 }
+*/
 
 const int Chat::count_allMessages()
 {
@@ -133,18 +136,16 @@ void Chat::Read_msg_in_all(const int num_of_msg) //сделать этоц функции exceptio
 {
 	if (all_messages.empty())
 	{
-		std::cout << "There is no messages yet\n";
+		std::cout << "There is no messages yet.\n";
 	}
 	else
 	{
 		if (num_of_msg <= all_messages.size())
-		{
-			std::cout << "Text:\n";
-			std::cout << all_messages[num_of_msg - 1].Show_Text() << std::endl;
-
+		{			
+			all_messages[num_of_msg - 1].Show_Message();
 		}
 		else
-			std::cout << "Index is out of range.\n";
+			throw bad_range();
 		
 	}
 }

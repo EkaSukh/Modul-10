@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+
 class Message;
 class User;
 
@@ -23,7 +24,7 @@ public:
 
 	
 	bool Add_message_to_all(const Message& msg_all);
-	void Show_AllMessages_sender();
+	//void Show_AllMessages_sender();
 	const int count_allMessages();
 	void Read_msg_in_all(const int num_of_msg);
 	
@@ -35,5 +36,5 @@ private:
 	std::vector<User> Users;
 
 	std::vector <Message> all_messages;
-	//std::vector<std::vector <Message>> personal_mesages;
+	
 };

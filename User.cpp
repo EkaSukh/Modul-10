@@ -4,6 +4,8 @@
 #include "Message.h"
 #include "User.h"
 
+
+
 std::string User::getName() const { return _name; }
 std::string User::getLogin() const { return _login; }
 
@@ -14,8 +16,6 @@ bool User::checkPass(const std::string& psw) { return (0 == psw.compare(_passwor
 
 void User::Add_msg_to_my_collection(Message& msg)
 {
-	int n = receivedMessg.size() + 1;
-	receivedMessg.resize(n);
 	receivedMessg.push_back(msg);
 }
 
@@ -24,7 +24,7 @@ const int User::Count_received_msg()
 	return receivedMessg.size();
 }
 
-void User::Read_personal_msg(const int n)
+void User::Read_personal_msg(const int n) 
 {
 	if (receivedMessg.empty())
 	{
@@ -32,25 +32,15 @@ void User::Read_personal_msg(const int n)
 	}
 	else
 	{
-		if (n <= receivedMessg.size())
+		
+		if (n <= (int)receivedMessg.size())
 		{
-			std::cout << "Text:\n";
-			std::cout << receivedMessg[n - 1].Show_Text() << std::endl;
+			
+			receivedMessg[n - 1].Show_Message(); 
 		}
 		else
-			std::cout << "Index is out of range.\n";
+			throw bad_range();
 
 	}
 }
 
-/*
-// It is collections of messages
-void User::ShowSent()
-{}
-
-void User::ShowThread()
-{}
-void User::ShowRecievedNames() //list of users from whom has messages
-{}
-void User::ShowFrom(const std::string& name) //messages form selected user
-{}*/
