@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-class Message;
+ class Message;
 class User;
 class Chat;
 
@@ -25,24 +25,12 @@ public:
 
 	bool StartChat(Chat& cht);
 
-	/*void Set_active_user(std::string& log)
-	{
-		U_login = log;
-
-	}
-
-	std::string Get_active_user() const
-	{
-		return U_login;
-	}*/
-
-
+	
 
 private:
 	bool enable = true;
-	//bool registration = false;
 	bool LoggedIn = false;
 
 	User* active_user = nullptr;
-	//std::string U_login;
+	
 };

@@ -1,10 +1,23 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <memory>
+#include <iostream>
+#include <exception>
 
-class Message;
+class bad_range :public std::exception
+{
+public:
+	virtual const char* what() const noexcept override
+	{
+		return "EXCEPTION: index is out of range\n";
+	}
 
+};
+
+
+
+ class Message;
+ 
 class User
 {
 public:
@@ -23,7 +36,7 @@ public:
 	bool checkPass(const std::string& psw);
 
 	
-	void Add_msg_to_my_collection(Message& msg);
+	void Add_msg_to_my_collection(Message & msg);
 	const int Count_received_msg();
 	void Read_personal_msg(const int n);
 
@@ -34,6 +47,5 @@ private:
 	std::string _name;
 
 	std::vector<Message> receivedMessg;
-	//std::shared_ptr <std::vector<Message> > receivedMessg_ptr = nullptr;
-
+	
 };
