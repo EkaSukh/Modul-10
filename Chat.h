@@ -15,11 +15,11 @@ public:
 	void ShowUsers();
 	bool FindUser(const std::string& login);
 	bool FindUser_by_name(const std::string& name);
-	std::shared_ptr<User> GetUser(const std::string& login);
-	std::shared_ptr<User> GetUser_by_name(const std::string& name);
+	User* GetUser(const std::string& login);
+	User* GetUser_by_name(const std::string& name);
 	
 
-	void ChatState(std::shared_ptr<User> usr);
+	void ChatState(User* usr);
 
 	
 	bool Add_message_to_all(const Message& msg_all);

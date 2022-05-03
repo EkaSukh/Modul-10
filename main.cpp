@@ -18,5 +18,6 @@ int main()
 	}
 	std::cout << "Thak you for chatting.";
 
+	delete chat1;
 	return 0;
 }

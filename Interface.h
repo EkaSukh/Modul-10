@@ -43,6 +43,6 @@ private:
 	//bool registration = false;
 	bool LoggedIn = false;
 
-	std::shared_ptr<User> active_user = nullptr;
+	User* active_user = nullptr;
 	//std::string U_login;
 };

@@ -104,11 +104,11 @@ void Interface::LogIn(Chat& cht)
 	if (!active_user)
 	{
 		std::cout << "Pointer of active user is nullptr.\n";
+		
 		active_user = cht.GetUser(lg_inp);
-		if (active_user->checkPass(pass_inp))
+		if (lg_inp->checkPass(pass_inp))
 		{
 			std::cout << "You have successfully signed in.\n\n";
-			//Set_active_user(lg_inp);
 			LoggedIn = true;
 		}
 		else
