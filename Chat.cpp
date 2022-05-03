@@ -5,6 +5,7 @@
 #include "User.h"
 
 
+
 //работа с вектором юзеров
 
 //добавляем юзера в конец
@@ -100,39 +101,21 @@ void Chat::ChatState(User* usr)
 
 
 //работа с вектором общих сообщений
-bool Chat::Add_message_to_all(const Message& msg_all)
+bool Chat::Add_message_to_all(const Message<std::string>& msg_all)
 {
 	all_messages.push_back(msg_all);
 	return true;
 	//а когда же функция будет принимать значения ложь?
 }
 
-/*
-void Chat::Show_AllMessages_sender()
-{
-	if (all_messages.empty())
-	{
-		std::cout << "There is no messages yet/\n";
-	}
-	else
-	{ 
-	std::vector<Message>::iterator msg;
-	int i = 0;
-		for (msg = all_messages.begin();msg != all_messages.end();i++,msg++)
-		{
-			std::cout << "#" << i + 1 << " from " << msg->Show_From() << std::endl;
 
-		}
-	}
-}
-*/
 
-const int Chat::count_allMessages()
+const size_t Chat::count_allMessages()
 {
 	return all_messages.size();
 }
 
-void Chat::Read_msg_in_all(const int num_of_msg) //сделать этоц функции exception
+void Chat::Read_msg_in_all(const size_t num_of_msg) //сделать этоц функции exception
 {
 	if (all_messages.empty())
 	{

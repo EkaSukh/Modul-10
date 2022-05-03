@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Message.h"
 
 
-class Message;
+template<> class Message <std::string>;
 class User;
 
 class Chat
@@ -23,10 +24,10 @@ public:
 	void ChatState(User* usr);
 
 	
-	bool Add_message_to_all(const Message& msg_all);
+	bool Add_message_to_all(const Message<std::string>& msg_all);
 	//void Show_AllMessages_sender();
-	const int count_allMessages();
-	void Read_msg_in_all(const int num_of_msg);
+	const size_t count_allMessages();
+	void Read_msg_in_all(const size_t num_of_msg);
 	
 	
 
@@ -35,6 +36,6 @@ public:
 private:
 	std::vector<User> Users;
 
-	std::vector <Message> all_messages;
+	std::vector <Message<std::string> > all_messages;
 	
 };

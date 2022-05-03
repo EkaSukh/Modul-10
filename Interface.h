@@ -1,10 +1,9 @@
 #pragma once
-
-#pragma once
 #include <iostream>
 #include <vector>
+#include "Message.h"
 
- class Message;
+template<> class Message <std::string>;
 class User;
 class Chat;
 
@@ -24,6 +23,8 @@ public:
 	void Quit();
 
 	bool StartChat(Chat& cht);
+
+	void Read_the_input(std::string& str);
 
 	
 
