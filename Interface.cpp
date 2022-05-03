@@ -6,6 +6,8 @@
 #include "User.h"
 #include "Interface.h"
 
+
+
 bool Interface::Enable(Chat& chat)
 {
 	//вывод меню в консоль и запрос ввода 
@@ -68,17 +70,11 @@ void Interface::Registration(Chat& cht)
 
 	User user(login, pass, name);
 
-	//создаем персональную линию сообщений для данного юзера
-	//cht.Create_Personal_Thread(user);
-
+	
 	//положить пользователя в лист юзеров и сказать результат
 	cht.AddUser(user);
 	std::cout << "Your user account successfully created.\n";
 	
-	{
-		std::cout << "\nList of current users:\n";
-		cht.ShowUsers();		
-	}
 }
 
 
@@ -127,6 +123,13 @@ void Interface::Quit()
 	enable = false;
 }
 
+void Interface::Read_the_input(std::string& str)
+{
+	char ch[100];
+	std::cin.get(ch, 100, '#');
+	str += ch;
+}
+
 bool Interface::StartChat(Chat& cht)
 {
 	if (!LoggedIn)
@@ -135,11 +138,12 @@ bool Interface::StartChat(Chat& cht)
 	cht.ChatState(active_user);
 
 	std::cout << "You may choose an option:\n";
-	std::cout << "1 To send a message to all other users\n";
-	std::cout << "2 To send a message to a selected user\n";
-	std::cout << "3 To read a messages from all users\n";
-	std::cout << "4 To read a personal message \n";
-	std::cout << "5 To go to main menu\n\n";
+	std::cout << "1 Send a message to all other users\n";
+	std::cout << "2 Send a message to a selected user\n";
+	std::cout << "3 Read a messages from all users\n";
+	std::cout << "4 Read a personal message\n";
+	std::cout << "5 Personal: change name or password\n";
+	std::cout << "6 Go to main menu\n\n";
 
 	
 	
@@ -155,15 +159,16 @@ bool Interface::StartChat(Chat& cht)
 	switch (input)
 	{
 	case 1: {
-		std::cout << "Enter the text (enter # to finish the message):\n";
+		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
 		
-		std::cin >> inp_text;
+		//std::cin >> inp_text;
+		Read_the_input(inp_text);
 		
 
 		std::string from = (active_user->getName());
 		std::string to = "all";
-		Message fresh(to, from, inp_text);
+		Message<std::string> fresh(to, from, inp_text);
 		cht.Add_message_to_all(fresh);
 
 		return true;
@@ -171,33 +176,40 @@ bool Interface::StartChat(Chat& cht)
 
 
 	case 2:{
+
+		{
+			std::cout << "\nList of current users:\n";
+			cht.ShowUsers();
+		}
 		
 		std::cout << "Enter recipient's name:\n";
 		std::string to;
 		std::cin >> to;
-
+		if (!cht.FindUser_by_name(to))
+		{
+			std::cout << "Can Not Find the user.\n";
+			return true;
+		}
 		std::string from = (active_user->getName());
 
-		std::cout << "Enter the text(enter # to finish the message):\n";
+		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
-		std::cin >> inp_text;
-		/*char ch;
-		std::cin.get(ch);
-		while (ch != '#')
-			inp_text += ch;*/
+		//std::cin >> inp_text;
+		Read_the_input(inp_text);
 		
-		Message fresh(to, from, inp_text);
+		
+		Message<std::string> fresh(to, from, inp_text);
 
 		//процедура нахождения именной нитки
 		std::cout << "Adding message to a recepients thread\n";
 		User* recipient_user = cht.GetUser_by_name(to);
-		if (recipient_user && cht.FindUser_by_name(to))
+		if (recipient_user) 
 		{
 			recipient_user->Add_msg_to_my_collection(fresh);
 			std::cout << "Added\n";
 		}
 		else
-			std::cout << "Can Not Find the user.\n";
+			std::cout << "Something went wrong.\n";
 
 		
 
@@ -207,8 +219,14 @@ bool Interface::StartChat(Chat& cht)
 	case 3:
 	{
 		std::cout << "Enter a number of a message you want to read:\n";
-		int n;
-		std::cin >> n;
+		size_t n;
+		while (!(std::cin >> n))//проверка ввода
+		{
+			std::cin.clear();
+			while (std::cin.get() != '\n')
+				continue;
+			std::cout << "Input shood be an integer. Please, try again.\n";
+		};
 		
 		try {
 			cht.Read_msg_in_all(n);
@@ -226,8 +244,15 @@ bool Interface::StartChat(Chat& cht)
 	case 4:
 	{
 		std::cout << "Enter a number of a message you want to read:\n";
-		int n;
-		std::cin >> n;
+		size_t n;
+		
+		while (!(std::cin >> n))//проверка ввода
+		{
+			std::cin.clear();
+			while (std::cin.get() != '\n')
+				continue;
+			std::cout << "Input shood be an integer. Please, try again.\n";
+		}
 
 		try {
 			active_user->Read_personal_msg(n);
@@ -242,6 +267,87 @@ bool Interface::StartChat(Chat& cht)
 	}
 
 	case 5:
+	{
+		
+		bool in_personal = true;
+		while (in_personal)
+		{
+			std::cout << "You may change your user's name and password:\n";
+			std::cout << "1 Change user's name.\n";
+			std::cout << "2 Change user's name.\n";
+			std::cout << "3 Go upward menu.\n";
+			int input;
+			while (!(std::cin >> input))//проверка ввода
+			{
+				std::cin.clear();
+				while (std::cin.get() != '\n')
+					continue;
+				std::cout << "Input shood be an integer 1  or 2. Please, try again.\n";
+			}
+
+			switch (input)
+			{
+			case 1:
+			{
+				std::cout << "Your current user's name is " << active_user->getName() << std::endl;
+				std::cout << "Would you like to change it? (y/n)\n";
+				char ch;
+				std::cin >> ch;
+				if ((ch == 'y') || (ch == 'Y'))
+				{
+					std::cout << "Enter new name:\n";
+					std::string new_name;
+					std::cin >> new_name;
+
+					active_user->setName(new_name);
+					std::cout << "Your new name is \"" << active_user->getName() << "\".\n";
+					break;
+
+				}
+				else
+					break;
+			}
+			case 2:
+			{
+				std::cout << "Would you like to change your password? (y/n)\n";
+				char ch;
+				std::cin >> ch;
+				if ((ch == 'y') || (ch == 'Y'))
+				{
+					std::cout << "Enter new password:\n";
+					std::string new_pass;
+					std::cin >> new_pass;
+
+					active_user->setPass(new_pass);
+					std::cout << "Your password is changed";
+					break;
+
+				}
+				else
+					break;
+
+
+			}
+			case 3:
+			{
+				in_personal = false;
+				break;
+			}
+			default:
+			{
+				in_personal = false;
+				break;
+			}
+							
+			}
+		}
+		
+
+		return true;
+	}
+
+
+	case 6:
 	{
 		
 		LoggedIn = false;

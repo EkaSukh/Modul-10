@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <exception>
+#include "Message.h"
 
 class bad_range :public std::exception
 {
@@ -16,7 +17,7 @@ public:
 
 
 
- class Message;
+template<> class Message <std::string>;
  
 class User
 {
@@ -36,9 +37,9 @@ public:
 	bool checkPass(const std::string& psw);
 
 	
-	void Add_msg_to_my_collection(Message & msg);
-	const int Count_received_msg();
-	void Read_personal_msg(const int n);
+	void Add_msg_to_my_collection(Message<std::string> & msg);
+	const size_t Count_received_msg();
+	void Read_personal_msg(const size_t n);
 
 	
 private:
@@ -46,6 +47,6 @@ private:
 	std::string _password;
 	std::string _name;
 
-	std::vector<Message> receivedMessg;
+	std::vector<Message<std::string> > receivedMessg;
 	
 };
