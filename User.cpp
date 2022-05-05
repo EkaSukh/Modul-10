@@ -15,7 +15,7 @@ void User::setPass(const std::string& pass) { _password = pass; }
 bool User::checkPass(const std::string& psw) { return (0 == psw.compare(_password)); }
 
 //добавление сообщения в коллекцию персональных сообщений
-void User::Add_msg_to_my_collection(Message<std::string>& msg)
+void User::Add_msg_to_my_collection(const Message<std::string>& msg)
 {
 	receivedMessg.push_back(msg);
 }

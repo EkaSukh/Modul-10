@@ -44,7 +44,7 @@ public:
 	bool checkPass(const std::string& psw);
 
 	//работа с коллекцией персональных сообщений
-	void Add_msg_to_my_collection(Message<std::string> & msg);
+	void Add_msg_to_my_collection(const Message<std::string> & msg);
 	const size_t Count_received_msg();
 	void Read_personal_msg(const size_t n);
 
