@@ -4,20 +4,20 @@
 #include "Chat.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 int main()
 {
-	Interface interface1;
-	Chat *chat1 = new Chat;
+	Interface interface1;//объект интрефэйса
+	std::unique_ptr<Chat> chat1(new Chat); //объект чата
 	std::cout << "Welcome to our chat!\n";
 
-	while (interface1.Enable(*chat1))
+	while (interface1.Enable(*chat1)) //вход в интерфэйс первого уровня
 	{
-		while (interface1.StartChat(*chat1))
+		while (interface1.StartChat(*chat1))//вход в интерфэйс второго уровня
 			continue;
 	}
-	std::cout << "Thak you for chatting.";
+	std::cout << "Thank you for chatting.";
 
-	delete chat1;
 	return 0;
 }

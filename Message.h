@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 
+// ласс ¤вл¤етс¤ самым низкоуровневым
+//«адан шаблоном
+//—оздана ¤вна¤ специализаци¤ данного шаболона дл¤ типа std::string
 template <typename Field>
 class Message
 {
@@ -28,6 +31,8 @@ private:
 	Field _text;
 };
 
+//явна¤ специализаци¤ шаблона дл¤ типа std::string
+//данна¤ спциализаци¤ будут использоватьс¤ всеми остальными классами
 template<> class Message <std::string>
 {
 public:
