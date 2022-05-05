@@ -15,8 +15,8 @@ It is a realization of a console multi-user chat that follows the technical issu
 Realization of the program logic
 ------------------------------------
 The realization relies on four classes:
-class Interface: provides communication between a user and a chat itself. Contains all menus blocks and process user's input.
-class Chat: contains a collection of users and a collection of messages, available for every user to read.
-class User: contains user's identifiers and personal collection of user's messages.
-class Message: contains an information to exchange between all users. (A text and its sender and recipient)
+1. class Interface: provides communication between a user and a chat itself. Contains all menus blocks and process user's input.
+2. class Chat: contains a collection of users and a collection of messages, available for every user to read.
+3. class User: contains user's identifiers and personal collection of user's messages.
+4. class Message: contains an information to exchange between all users. (A text and its sender and recipient)
     
