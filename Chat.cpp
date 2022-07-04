@@ -3,45 +3,40 @@
 
 //работа с вектором полюзователей
 
-//добавляем юзера в конец массива пользователей
+//добавляем юзера в конец map пользователей
 void Chat::addUser(const User& usr)
 {
-	Users.push_back(usr);
-
+	Users.insert({ usr.getLogin(), usr});
 }
 
 //Выводим список пользователей чата по имени
 void Chat::showUsers()
 {
-	std::vector<User>::iterator usr;
+	std::map <std::string , User>::iterator usr;
 	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
 	{
-		std::cout << usr->getName() << std::endl;
+		std::cout << usr->second.getName() << std::endl;
 	}
 }
 
 //находит пользователя по логину и возвращает успешность
 bool Chat::findUser(const std::string& login)
 {
-	std::vector<User>::iterator usr;
-	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
-	{
-		std::string tmp = usr->getLogin();
-		if (0 == tmp.compare(login))
+	std::map <std::string, User>::iterator usr = Users.find(login);
+	
+	if(usr != Users.end())
 			return true;
-	}
-
-	return false;
-
+	else
+		return false;
 }
 
 //находит пользователя по имени и возвращает успешность
 bool Chat::findUserByName(const std::string& name)
 {
-	std::vector<User>::iterator usr;
+	std::map <std::string, User>::iterator usr;
 	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
 	{
-		std::string tmp = usr->getName();
+		std::string tmp = usr->second.getName();
 		if (0 == tmp.compare(name))
 			return true;
 	}
@@ -53,36 +48,25 @@ bool Chat::findUserByName(const std::string& name)
 //Возвращает указатель на пользователя с данным логином
 User* Chat::getUser(const std::string& login)
 {
-	std::vector<User>::iterator usr;
-	int i = 0;
-	for (usr = Users.begin();usr != Users.end(); ++i, ++usr)//движение по списку юзеров с использованием итератора
-	{
-		std::string tmp = usr->getLogin();
-		if (0 == tmp.compare(login))
-		{
-
-			return &Users[i];
-		}
-
-	}
-	return nullptr;
-
+	std::map <std::string, User>::iterator usr = Users.find(login);
+	
+	if (usr != Users.end())
+		return &(usr->second);
+	else
+		return nullptr;
 }
 
 //Возвращает указатель на пользователя с данным именем
 User* Chat::getUserByName(const std::string& name)
 {
-	std::vector<User>::iterator usr;
-	int i = 0;
-	for (usr = Users.begin();usr != Users.end(); ++i, ++usr)
-	{
-		std::string tmp = usr->getName();
-		if (0 == tmp.compare(name))
-		{
-			return &Users[i];
-		}
 
-	}
+	std::map <std::string, User>::iterator usr;
+	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
+	{
+		std::string tmp = usr->second.getName();
+		if (0 == tmp.compare(name))
+			return &(usr->second);
+	}	
 	return nullptr;
 
 }
