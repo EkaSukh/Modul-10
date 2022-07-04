@@ -3,11 +3,9 @@
 #include <vector>
 #include <exception>
 #include "Message.h"
-#include "SHA_1.h"
 
-const uint PASS = 15;
 
-//РєР»Р°СЃСЃ РґР»В¤ С„РѕСЂРјРёСЂРѕРІР°РЅРёВ¤ РёСЃРєР»СЋС‡РµРЅРёР№ РІ С„СѓРЅРєС†РёРё С‡С‚РµРЅРёВ¤ СЃРѕРѕР±С‰РµРЅРёВ¤ РёР· РІРµРєС‚РѕСЂР° РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
+//класс дл¤ формировани¤ исключений в функции чтени¤ сообщени¤ из вектора персональных сообщений
 class bad_range :public std::exception
 {
 public:
@@ -19,45 +17,45 @@ public:
 };
 
 
-//РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕРµ РѕР±СЉВ¤РІР»РµРЅРёРµ В¤РІРЅРѕР№ СЃРїРµС†РёР°Р»РёР·Р°С†РёРё С€Р°Р±Р»РѕРЅРЅРѕРіРѕ РєР»Р°СЃСЃР° Message
-//РєРѕС‚РѕСЂС‹Р№ РІС…РѕРґРёС‚ РІ РѕР±СЉВ¤РІР»РµРЅРёРµ РєР»Р°СЃСЃР° User
+//предварительное объ¤вление ¤вной специализации шаблонного класса Message
+//который входит в объ¤вление класса User
 template<> class Message <std::string>;
 
-//РєР»Р°СЃСЃ РѕРїРёСЃС‹РІР°РµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»В¤ С‡Р°С‚Р°
+//класс описывает пользовател¤ чата
 class User
 {
 public:
-	//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
+	//конструкторы
 	User() {}
-	User(const std::string& login, const std::string& passw, const std::string& name):
+	User(const std::string& login, const std::string& passw, const std::string& name) :
 		_login(login), _password(passw), _name(name) {}
 
-	//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
+	//деструктор
 	~User() {}
 
-	//РіРµС‚РµСЂС‹ РїСЂРёРІР°С‚РЅС‹С… РґР°РЅРЅС‹С…
+	//гетеры приватных данных
 	std::string getName() const;
 	std::string getLogin() const;
-	
-	//СЃРµС‚РµСЂС‹ РїСЂРёРІР°С‚РЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…
+
+	//сетеры приватных переменных
 	void setName(const std::string& name);
 	void setPass(const std::string& pass);
 
-	//РїСЂРѕРІРµСЂРєР° РїР°СЂРѕР»В¤
+	//проверка парол¤
 	bool checkPass(const std::string& psw);
 
-	//СЂР°Р±РѕС‚Р° СЃ РєРѕР»Р»РµРєС†РёРµР№ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
-	void addMessageToMyCollection(const Message<std::string> & msg);
+	//работа с коллекцией персональных сообщений
+	void addMessageToMyCollection(const Message<std::string>& msg);
 	size_t countReceivedMsg() const;
 	void readPersonalMsg(const size_t n);
 
-	
+
 private:
-	const std::string _login; //РєРѕРЅСЃС‚Р°РЅС‚РЅР°В¤ РїРµСЂРµРјРµРЅРЅР°В¤ РґР»В¤ РѕРґРЅРѕР·РЅР°С‡РЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёВ¤ СЋР·РµСЂР° РІ СЃРїРёСЃРєРµ
+	const std::string _login; //константна¤ переменна¤ дл¤ однозначного определени¤ юзера в списке
 	std::string _password;
 	std::string _name;
-	
-	// РєРѕР»Р»РµРєС†РёВ¤ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№ РґР»В¤ РґР°РЅРЅРѕРіРѕ СЋР·РµСЂР°
+
+	// коллекци¤ персональных сообщений дл¤ данного юзера
 	std::vector<Message<std::string> > receivedMessg;
-	
+
 };

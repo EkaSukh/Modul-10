@@ -1,30 +1,30 @@
 #include "Interface.h"
 
 
-//РїРµСЂРІС‹Р№ СѓСЂРѕРІРµРЅСЊ РёРЅС‚РµСЂС„СЌР№СЃР°
+//первый уровень интерфэйса
 bool Interface::Enable(Chat& chat)
 {
-	//РІС‹РІРѕРґ РјРµРЅСЋ РІ РєРѕРЅСЃРѕР»СЊ Рё Р·Р°РїСЂРѕСЃ РІРІРѕРґР° 
+	//вывод меню в консоль и запрос ввода 
 	std::cout << "Please, choose an option:\n"
-		<<"1 Registration of a new user.\n"
-		<<"2 Sign in as an existing user\n"
-		<<"3 Quit the Chat" << std::endl;
+		<< "1 Registration of a new user.\n"
+		<< "2 Sign in as an existing user\n"
+		<< "3 Quit the Chat" << std::endl;
 	int input;
-	while (!(std::cin >> input))//РїСЂРѕРІРµСЂРєР° РІРІРѕРґР°
+	while (!(std::cin >> input))//проверка ввода
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n')
 			continue;
 		std::cout << "Input shood be an integer from 1 to 3. Please, try again.\n";
-	}	
+	}
 
-	//РґРІРёР¶РµРЅРёРµ РїРѕ РјРµРЅСЋ
+	//движение по меню
 	switch (input)
 	{
-	case 3: 
+	case 3:
 	{
 		quit();
-		return enable;	
+		return enable;
 	}
 	case 2:
 	{
@@ -38,11 +38,11 @@ bool Interface::Enable(Chat& chat)
 		return enable;
 	}
 
-	default: return false;//РµСЃР»Рё РІРІРµРґРµРЅРѕ РЅРµ 1, 2, 3, С‚Рѕ РІС‹С…РѕРґРёРј РёР· С‡Р°С‚Р°
+	default: return false;//если введено не 1, 2, 3, то выходим из чата
 	}
 }
 
-//СЂРµРіРёСЃС‚СЂР°С†РёСЏ РІ С‡Р°С‚Рµ РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+//регистрация в чате нового пользователя
 void Interface::registration(Chat& cht)
 {
 	std::string name;
@@ -51,7 +51,7 @@ void Interface::registration(Chat& cht)
 	std::cout << "Enter your login (it can not be changed in future):\n";
 	std::cin >> login;
 
-	//РџСЂРѕРІРµСЂРєР° Р»РѕРіРёРЅР°, РІРґСЂСѓРі С‚Р°РєРѕР№ СѓР¶Рµ РµСЃС‚СЊ.
+	//Проверка логина, вдруг такой уже есть.
 	while (cht.findUser(login))
 	{
 		std::cout << "This login is engaged, choose another one:\n";
@@ -63,51 +63,51 @@ void Interface::registration(Chat& cht)
 	std::cout << "Enter your password:\n";
 	std::cin >> pass;
 
-	User user(login, pass, name);//СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ СЃРєРѕРїРёСЂРѕРІР°РЅ РІ РјР°СЃСЃРёРІ
-		
-	//РїРѕР»РѕР¶РёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Р»РёСЃС‚ СЋР·РµСЂРѕРІ
+	User user(login, pass, name);//создание объекта пользователя, который будет скопирован в массив
+
+	//положить пользователя в лист юзеров
 	cht.addUser(user);
 	std::cout << "Your user account successfully created.\n";
-	
+
 }
 
 
-//РІС…РѕРґ РІ С‡Р°С‚ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ Р»РѕРіРёРЅСѓ Рё РїР°СЂРѕР»СЋ
+//вход в чат зарегистрированного пользователя по логину и паролю
 void Interface::logIn(Chat& cht)
 {
 	std::cout << "Enter your loggin:\n";
 	std::string lg_inp;
 	std::cin >> lg_inp;
 
-	if(!cht.findUser(lg_inp))//РїСЂРѕРІРµСЂРєР° РІРІРµРґРµРЅРЅРѕРіРѕ Р»РѕРіРёРЅР° РЅР° РЅР°Р»РёС‡РёРµ С‚Р°РєРѕРіРѕ СЋР·РµСЂР°
+	if (!cht.findUser(lg_inp))//проверка введенного логина на наличие такого юзера
 	{
 		std::cout << "There is no user with this login.\n";
 		return;
 	}
 
-	
-	active_user = cht.getUser(lg_inp);//СѓСЃС‚Р°РЅРѕРІРєР° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+
+	active_user = cht.getUser(lg_inp);//установка указателя на пользователя
 
 	std::cout << "Enter your password:\n";
 	std::string pass_inp;
 	std::cin >> pass_inp;
 
-		if (active_user->checkPass(pass_inp))
-		{
-			std::cout << "You have successfully signed in.\n\n";
-			LoggedIn = true;//РІРєР»СЋС‡РµРЅРёРµ РёРЅС‚РµСЂС„СЌР№СЃР° РІС‚РѕСЂРѕРіРѕ СѓСЂРѕРІРЅСЏ
-		}
-		else
-			std::cout << "The password is incorrect.\n";
+	if (active_user->checkPass(pass_inp))
+	{
+		std::cout << "You have successfully signed in.\n\n";
+		LoggedIn = true;//включение интерфэйса второго уровня
+	}
+	else
+		std::cout << "The password is incorrect.\n";
 }
 
-//РІС‹С…РѕРґ РёР· С‡Р°С‚Р°
+//выход из чата
 void Interface::quit()
 {
-	enable = false;//РѕС‚РєР»СЋС‡РµРЅРёРµ РїРµСЂРІРѕРіРѕ СѓСЂРѕРІРЅСЏ РёРЅС‚РµСЂС„СЌР№СЃР°
+	enable = false;//отключение первого уровня интерфэйса
 }
 
-//С„РѕСЂРјРёСЂСѓРµС‚ С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РёР· РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РІРІРѕРґР°
+//формирует текст сообщения из пользовательского ввода
 void Interface::readTheInput(std::string& str)
 {
 	char ch[100];
@@ -115,7 +115,7 @@ void Interface::readTheInput(std::string& str)
 	str += ch;
 }
 
-//РРЅС‚РµСЂС„СЌР№СЃ РІС‚РѕСЂРѕРіРѕ СѓСЂРѕРІРЅСЏ
+//Интерфэйс второго уровня
 bool Interface::startChat(Chat& cht)
 {
 	if (!LoggedIn)
@@ -130,10 +130,10 @@ bool Interface::startChat(Chat& cht)
 	std::cout << "4 Read a personal message\n";
 	std::cout << "5 Personal: change name or password\n";
 	std::cout << "6 Go to main menu\n\n";
-	
-	
+
+
 	int input;
-	while (!(std::cin >> input))//РїСЂРѕРІРµСЂРєР° РІРІРѕРґР°
+	while (!(std::cin >> input))//проверка ввода
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n')
@@ -143,34 +143,34 @@ bool Interface::startChat(Chat& cht)
 
 	switch (input)
 	{
-		//РЅР°РїРёСЃР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РґР»СЏ РІСЃРµС…
+		//написать сообщение для всех
 	case 1: {
 		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
 		readTheInput(inp_text);
-		
+
 		std::string from = (active_user->getName());
 		std::string to = "all";
 
-		Message<std::string> fresh(to, from, inp_text);//СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° СЃРѕРѕР±С‰РµРЅРёСЏ
+		Message<std::string> fresh(to, from, inp_text);//создание объекта сообщения
 
 		cht.addMessageToAll(fresh);
 
 		return true;
 	}
 
-	//РЅР°РїРёСЃР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ
-	case 2:{
+		  //написать сообщение конкретному пользователю
+	case 2: {
 
-		{//РїРѕРєР°Р·Р°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РїРѕРёРјРµРЅРЅРѕ
+		{//показать пользователей поименно
 			std::cout << "\nList of current users:\n";
 			cht.showUsers();
-		}	
-		//РІРІРµСЃС‚Рё РїРѕР»СѓС‡Р°С‚РµР»СЏ
+		}
+		//ввести получателя
 		std::cout << "Enter recipient's name:\n";
 		std::string to;
 		std::cin >> to;
-		//РїСЂРѕРІРµСЂРєР° РЅР° РЅР°Р»РёС‡РёРµ С‚Р°РєРѕРіРѕ РїРѕР»СѓС‡Р°С‚РµР»СЏ
+		//проверка на наличие такого получателя
 		if (!cht.findUserByName(to))
 		{
 			std::cout << "Can Not Find the user.\n";
@@ -181,13 +181,13 @@ bool Interface::startChat(Chat& cht)
 		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
 		readTheInput(inp_text);
-				
-		Message<std::string> fresh(to, from, inp_text);//СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° СЃРѕРѕР±С‰РµРЅРёСЏ
 
-		//РїСЂРѕС†РµРґСѓСЂР° РЅР°С…РѕР¶РґРµРЅРёСЏ РёРјРµРЅРЅРѕР№ РЅРёС‚РєРё
+		Message<std::string> fresh(to, from, inp_text);//создание объекта сообщения
+
+		//процедура нахождения именной нитки
 		std::cout << "Adding message to a recepients thread\n";
 
-		User* recipient_user = cht.getUserByName(to);//СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РїРѕР»СѓС‡Р°С‚РµР»СЏ СЃРѕРѕР±С‰РµРЅРёСЏ
+		User* recipient_user = cht.getUserByName(to);//указатель на получателя сообщения
 		if (recipient_user)
 		{
 			recipient_user->addMessageToMyCollection(fresh);
@@ -200,37 +200,37 @@ bool Interface::startChat(Chat& cht)
 
 	}
 
-	//РїСЂРѕС‡РµСЃС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РёР· РјР°СЃСЃРёРІР° РѕР±С‰РёС… СЃРѕРѕР±С‰РµРЅРёР№
+		  //прочесть сообщение из массива общих сообщений
 	case 3:
 	{
 		std::cout << "Enter a serial number of a message you want to read:\n";
 		size_t n;
-		while (!(std::cin >> n))//РїСЂРѕРІРµСЂРєР° РІРІРѕРґР°
+		while (!(std::cin >> n))//проверка ввода
 		{
 			std::cin.clear();
 			while (std::cin.get() != '\n')
 				continue;
 			std::cout << "Input shood be a posotive integer. Please, try again.\n";
 		};
-		
-		//РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РµРЅРёР№ РµСЃР»Рё РїРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ РїСЂРµРІС‹С€РµРЅ
+
+		//обработка исключений если порядковый номер превышен
 		try {
 			cht.readMsgAll(n);
 		}
-		catch(std::exception& e)
+		catch (std::exception& e)
 		{
 			std::cout << e.what();
-		}		
+		}
 
 		return true;
 	}
 
-	//РїСЂРѕС‡РµСЃС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РёР· РјР°СЃСЃРёРІР° РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
+	//прочесть сообщение из массива персональных сообщений
 	case 4:
 	{
 		std::cout << "Enter a serial number of a message you want to read:\n";
-		size_t n;		
-		while (!(std::cin >> n))//РїСЂРѕРІРµСЂРєР° РІРІРѕРґР°
+		size_t n;
+		while (!(std::cin >> n))//проверка ввода
 		{
 			std::cin.clear();
 			while (std::cin.get() != '\n')
@@ -238,7 +238,7 @@ bool Interface::startChat(Chat& cht)
 			std::cout << "Input shood be a positive integer. Please, try again.\n";
 		}
 
-		//РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РµРЅРёР№ РµСЃР»Рё РїРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ РїСЂРµРІС‹С€РµРЅ
+		//обработка исключений если порядковый номер превышен
 		try {
 			active_user->readPersonalMsg(n);
 		}
@@ -250,10 +250,10 @@ bool Interface::startChat(Chat& cht)
 		return true;
 	}
 
-	//РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹Р№ РёРЅС‚РµСЂС„СЌР№СЃ РґР»СЏ СЃРјРµРЅС‹ РїР°СЂРѕР»СЏ Рё РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+	//персональный интерфэйс для смены пароля и имени пользователя
 	case 5:
-	{		
-		bool in_personal = true;//РІР°Р»РёРґР°С‚РѕСЂ РЅР°С…РѕР¶РґРµРЅРёСЏ РІРЅСѓС‚СЂРё РїРµСЂСЃРѕРЅР°Р»СЊРЅРѕРіРѕ РёРЅС‚РµСЂС„СЌР№СЃР°
+	{
+		bool in_personal = true;//валидатор нахождения внутри персонального интерфэйса
 		while (in_personal)
 		{
 			std::cout << "You may change your user's name and password:\n";
@@ -261,7 +261,7 @@ bool Interface::startChat(Chat& cht)
 			std::cout << "2 Change user's password.\n";
 			std::cout << "3 Go upward menu.\n";
 			int input;
-			while (!(std::cin >> input))//РїСЂРѕРІРµСЂРєР° РІРІРѕРґР°
+			while (!(std::cin >> input))//проверка ввода
 			{
 				std::cin.clear();
 				while (std::cin.get() != '\n')
@@ -271,7 +271,7 @@ bool Interface::startChat(Chat& cht)
 
 			switch (input)
 			{
-			case 1://СЃРјРµРЅР° РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+			case 1://смена имени пользователя
 			{
 				std::cout << "Your current user's name is " << active_user->getName() << std::endl;
 				std::cout << "Would you like to change it? (y/n)\n";
@@ -291,7 +291,7 @@ bool Interface::startChat(Chat& cht)
 				else
 					break;
 			}
-			case 2://СЃРјРµРЅР° РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+			case 2://смена пароля пользователя
 			{
 				std::cout << "Would you like to change your password? (y/n)\n";
 				char ch;
@@ -312,34 +312,34 @@ bool Interface::startChat(Chat& cht)
 
 
 			}
-			case 3://РІС‹С…РѕРґ РёР· РїРµСЂСЃРѕРЅР°Р»СЊРЅРѕРіРѕ РјРµРЅСЋ РІРѕ РІС‚РѕСЂРѕР№ СѓСЂРѕРІРµРЅСЊ РёРЅС‚РµСЂС„СЌР№СЃР°
+			case 3://выход из персонального меню во второй уровень интерфэйса
 			{
 				in_personal = false;
 				break;
 			}
-			default://РµСЃР»Рё РІРІРµРґРµРЅРѕ РЅРµ 1, 2, 3, С‚Рѕ С‚РѕР¶Рµ РІС‹С…РѕРґ РІРѕ РІС‚РѕСЂРѕР№ СѓСЂРѕРІРµРЅСЊ РёРЅС‚РµСЂС„СЌР№СЃР°
+			default://если введено не 1, 2, 3, то тоже выход во второй уровень интерфэйса
 			{
 				in_personal = false;
 				break;
 			}
-							
+
 			}
 		}
-		
+
 
 		return true;
 	}
 
 
-	case 6: //РІС‹С…РѕРґ РІ РїРµСЂРІС‹Р№ СѓСЂРѕРІРµРЅСЊ РёРЅС‚РµСЂС„СЌР№СЃР°
+	case 6: //выход в первый уровень интерфэйса
 	{
-		
+
 		LoggedIn = false;
 		return false;
 	}
-		
 
-	default: //РµСЃР»Рё РІРІРµРґРµРЅРѕ С†РµР»РѕРµ РЅРµ РѕС‚ 1 РґРѕ 6, С‚Рѕ С‚РѕР¶Рµ РІС‹С…РѕРґ РІ РїРµСЂРІС‹Р№ СѓСЂРѕРІРµРЅСЊ РёРЅС‚РµСЂС„СЌР№СЃР°
+
+	default: //если введено целое не от 1 до 6, то тоже выход в первый уровень интерфэйса
 		return false;
 	}
 
