@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>
-#include <vector>
+#include "User.h"
+#include "Chat.h"
 
 
 //предварительное объ¤влени¤ классов
@@ -21,15 +21,15 @@ public:
 	bool Enable(Chat& chat);//булева функци¤ используетс¤ во внешнем цикле запуска
 
 	//функции работают в первом уровне интерфэйса и вызываютс¤ из Enable()
-	void Registration(Chat& cht);	
-	void LogIn(Chat& cht);
-	void Quit();
+	static void registration(Chat& cht);	
+	void logIn(Chat& cht);
+	void quit();
 
 	//¬торой уровень интерфэйса
-	bool StartChat(Chat& cht);
+	bool startChat(Chat& cht);
 
 	//читает ввод пользовател¤ дл¤ формировани¤ текста сообщени¤
-	void Read_the_input(std::string& str);
+	static void readTheInput(std::string& str);
 
 private:
 	//переменные контролируют подключение уровн¤ интерфэйса
