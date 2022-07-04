@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include "User.h"
 
 //предварительное объявление явной специализации шаблонного класса Message
@@ -43,7 +44,7 @@ public:
 
 private:
 	//массив пользователей
-	std::vector<User> Users;
+	std::map <std::string, User> Users;
 
 	//массив общих сообщений, доступных всем пользователям
 	std::vector <Message<std::string> > all_messages;
