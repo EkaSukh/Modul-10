@@ -5,13 +5,13 @@
 
 int main()
 {
-	Interface interface;//объект интрефэйса
-	Chat chat; //объект чата
+	Interface interface;//РѕР±СЉРµРєС‚ РёРЅС‚СЂРµС„СЌР№СЃР°
+	Chat chat; //РѕР±СЉРµРєС‚ С‡Р°С‚Р°
 	std::cout << "Welcome to our chat!\n";
 
-	while (interface.Enable(chat)) //вход в интерфэйс первого уровня
+	while (interface.Enable(chat)) //РІС…РѕРґ РІ РёРЅС‚РµСЂС„СЌР№СЃ РїРµСЂРІРѕРіРѕ СѓСЂРѕРІРЅСЏ
 	{
-		while (interface.startChat(chat))//вход в интерфэйс второго уровня
+		while (interface.startChat(chat))//РІС…РѕРґ РІ РёРЅС‚РµСЂС„СЌР№СЃ РІС‚РѕСЂРѕРіРѕ СѓСЂРѕРІРЅСЏ
 			continue;
 	}
 	std::cout << "Thank you for chatting.";
