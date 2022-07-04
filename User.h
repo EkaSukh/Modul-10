@@ -34,7 +34,9 @@ public:
 	User(const std::string& login, const std::string& passw, const std::string& name);
 
 	//деструктор
-	~User() {}
+	~User() {
+		delete _hash;
+	}
 
 	//гетеры приватных данных
 	std::string getName() const;
@@ -59,7 +61,7 @@ private:
 	std::string _name;
 	
 	// указатель на хэшированный пароль
-	uint* _hash = nullptr;
+	uint* _hash;
 	
 	// коллекци¤ персональных сообщений дл¤ данного юзера
 	std::vector<Message<std::string> > receivedMessg;
