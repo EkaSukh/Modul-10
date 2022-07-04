@@ -2,9 +2,11 @@
 
 #include <vector>
 #include <exception>
+#include <string>
 #include "Message.h"
 #include "SHA_1.h"
 
+//константа для создания массива символов при хэшировании
 const uint PASS = 15;
 
 //класс дл¤ формировани¤ исключений в функции чтени¤ сообщени¤ из вектора персональных сообщений
@@ -29,8 +31,7 @@ class User
 public:
 	//конструкторы
 	User() {}
-	User(const std::string& login, const std::string& passw, const std::string& name):
-		_login(login), _password(passw), _name(name) {}
+	User(const std::string& login, const std::string& passw, const std::string& name);
 
 	//деструктор
 	~User() {}
@@ -54,8 +55,11 @@ public:
 	
 private:
 	const std::string _login; //константна¤ переменна¤ дл¤ однозначного определени¤ юзера в списке
-	std::string _password;
+	//std::string _password;
 	std::string _name;
+	
+	// указатель на хэшированный пароль
+	uint* _hash = nullptr;
 	
 	// коллекци¤ персональных сообщений дл¤ данного юзера
 	std::vector<Message<std::string> > receivedMessg;
