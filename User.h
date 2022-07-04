@@ -1,8 +1,11 @@
 #pragma once
-#include <iostream>
+
 #include <vector>
 #include <exception>
 #include "Message.h"
+#include "SHA_1.h"
+
+const uint PASS = 15;
 
 //класс дл¤ формировани¤ исключений в функции чтени¤ сообщени¤ из вектора персональных сообщений
 class bad_range :public std::exception
@@ -26,7 +29,7 @@ class User
 public:
 	//конструкторы
 	User() {}
-	User(const std::string& login, const std::string& passw, const std::string& name) :
+	User(const std::string& login, const std::string& passw, const std::string& name):
 		_login(login), _password(passw), _name(name) {}
 
 	//деструктор
@@ -44,16 +47,16 @@ public:
 	bool checkPass(const std::string& psw);
 
 	//работа с коллекцией персональных сообщений
-	void Add_msg_to_my_collection(const Message<std::string> & msg);
-	const size_t Count_received_msg();
-	void Read_personal_msg(const size_t n);
+	void addMessageToMyCollection(const Message<std::string> & msg);
+	size_t countReceivedMsg() const;
+	void readPersonalMsg(const size_t n);
 
 	
 private:
 	const std::string _login; //константна¤ переменна¤ дл¤ однозначного определени¤ юзера в списке
 	std::string _password;
 	std::string _name;
-
+	
 	// коллекци¤ персональных сообщений дл¤ данного юзера
 	std::vector<Message<std::string> > receivedMessg;
 	

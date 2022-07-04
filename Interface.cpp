@@ -1,9 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include "Chat.h"
-#include "Message.h"
-#include "User.h"
 #include "Interface.h"
 
 
@@ -29,18 +23,18 @@ bool Interface::Enable(Chat& chat)
 	{
 	case 3: 
 	{
-		Quit();
+		quit();
 		return enable;	
 	}
 	case 2:
 	{
-		LogIn(chat);
+		logIn(chat);
 		return enable;
 	}
 
 	case 1:
 	{
-		Registration(chat);
+		registration(chat);
 		return enable;
 	}
 
@@ -49,7 +43,7 @@ bool Interface::Enable(Chat& chat)
 }
 
 //регистрация в чате нового пользователя
-void Interface::Registration(Chat& cht)
+void Interface::registration(Chat& cht)
 {
 	std::string name;
 	std::string login;
@@ -58,7 +52,7 @@ void Interface::Registration(Chat& cht)
 	std::cin >> login;
 
 	//Проверка логина, вдруг такой уже есть.
-	while (cht.FindUser(login))
+	while (cht.findUser(login))
 	{
 		std::cout << "This login is engaged, choose another one:\n";
 		std::cin >> login;
@@ -72,33 +66,31 @@ void Interface::Registration(Chat& cht)
 	User user(login, pass, name);//создание объекта пользователя, который будет скопирован в массив
 		
 	//положить пользователя в лист юзеров
-	cht.AddUser(user);
+	cht.addUser(user);
 	std::cout << "Your user account successfully created.\n";
 	
 }
 
 
 //вход в чат зарегистрированного пользователя по логину и паролю
-void Interface::LogIn(Chat& cht)
+void Interface::logIn(Chat& cht)
 {
 	std::cout << "Enter your loggin:\n";
 	std::string lg_inp;
 	std::cin >> lg_inp;
 
-	if(!cht.FindUser(lg_inp))//проверка введенного логина на наличие такого юзера
+	if(!cht.findUser(lg_inp))//проверка введенного логина на наличие такого юзера
 	{
 		std::cout << "There is no user with this login.\n";
 		return;
 	}
 
-	active_user = nullptr;//обнуление указателя на активного пользователя, если он был занят
-	if (!active_user)
-	{
-		active_user = cht.GetUser(lg_inp);//установка указателя на пользователя
+	
+	active_user = cht.getUser(lg_inp);//установка указателя на пользователя
 
-			std::cout << "Enter your password:\n";
-			std::string pass_inp;
-			std::cin >> pass_inp;
+	std::cout << "Enter your password:\n";
+	std::string pass_inp;
+	std::cin >> pass_inp;
 
 		if (active_user->checkPass(pass_inp))
 		{
@@ -107,23 +99,16 @@ void Interface::LogIn(Chat& cht)
 		}
 		else
 			std::cout << "The password is incorrect.\n";
-
-	}
-	else
-		std::cout << "could not nulled pointer on active_user.\n";
-		
-		
-	
 }
 
 //выход из чата
-void Interface::Quit()
+void Interface::quit()
 {
 	enable = false;//отключение первого уровня интерфэйса
 }
 
 //формирует текст сообщения из пользовательского ввода
-void Interface::Read_the_input(std::string& str)
+void Interface::readTheInput(std::string& str)
 {
 	char ch[100];
 	std::cin.get(ch, 100, '#');
@@ -131,12 +116,12 @@ void Interface::Read_the_input(std::string& str)
 }
 
 //Интерфэйс второго уровня
-bool Interface::StartChat(Chat& cht)
+bool Interface::startChat(Chat& cht)
 {
 	if (!LoggedIn)
 		return false;
 
-	cht.ChatState(active_user);
+	cht.chatState(active_user);
 
 	std::cout << "You may choose an option:\n";
 	std::cout << "1 Send a message to all other users\n";
@@ -162,14 +147,14 @@ bool Interface::StartChat(Chat& cht)
 	case 1: {
 		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
-		Read_the_input(inp_text);
+		readTheInput(inp_text);
 		
 		std::string from = (active_user->getName());
 		std::string to = "all";
 
 		Message<std::string> fresh(to, from, inp_text);//создание объекта сообщения
 
-		cht.Add_message_to_all(fresh);
+		cht.addMessageToAll(fresh);
 
 		return true;
 	}
@@ -179,14 +164,14 @@ bool Interface::StartChat(Chat& cht)
 
 		{//показать пользователей поименно
 			std::cout << "\nList of current users:\n";
-			cht.ShowUsers();
+			cht.showUsers();
 		}	
 		//ввести получателя
 		std::cout << "Enter recipient's name:\n";
 		std::string to;
 		std::cin >> to;
 		//проверка на наличие такого получателя
-		if (!cht.FindUser_by_name(to))
+		if (!cht.findUserByName(to))
 		{
 			std::cout << "Can Not Find the user.\n";
 			return true;
@@ -195,17 +180,17 @@ bool Interface::StartChat(Chat& cht)
 		std::string from = (active_user->getName());
 		std::cout << "Enter the message up to 100 symbols (enter # to finish the message):\n";
 		std::string inp_text;
-		Read_the_input(inp_text);
+		readTheInput(inp_text);
 				
 		Message<std::string> fresh(to, from, inp_text);//создание объекта сообщения
 
 		//процедура нахождения именной нитки
 		std::cout << "Adding message to a recepients thread\n";
 
-		User* recipient_user = cht.GetUser_by_name(to);//указатель на получателя сообщения
+		User* recipient_user = cht.getUserByName(to);//указатель на получателя сообщения
 		if (recipient_user)
 		{
-			recipient_user->Add_msg_to_my_collection(fresh);
+			recipient_user->addMessageToMyCollection(fresh);
 			std::cout << "Added\n";
 		}
 		else
@@ -230,7 +215,7 @@ bool Interface::StartChat(Chat& cht)
 		
 		//обработка исключений если порядковый номер превышен
 		try {
-			cht.Read_msg_in_all(n);
+			cht.readMsgAll(n);
 		}
 		catch(std::exception& e)
 		{
@@ -255,7 +240,7 @@ bool Interface::StartChat(Chat& cht)
 
 		//обработка исключений если порядковый номер превышен
 		try {
-			active_user->Read_personal_msg(n);
+			active_user->readPersonalMsg(n);
 		}
 
 		catch (std::exception& e)

@@ -1,35 +1,30 @@
-#include <iostream>
-#include <vector>
 #include "Chat.h"
-#include "Message.h"
-#include "User.h"
-
 
 
 //работа с вектором полюзователей
 
 //добавляем юзера в конец массива пользователей
-void Chat::AddUser(const User& usr)
+void Chat::addUser(const User& usr)
 {
 	Users.push_back(usr);
 	
 }
 
 //Выводим список пользователей чата по имени
-void Chat::ShowUsers()
+void Chat::showUsers()
 {
 	std::vector<User>::iterator usr;
-	for (usr = Users.begin();usr != Users.end();usr++)//движение по списку юзеров с использованием итератора
+	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
 	{
 		std::cout << usr->getName() << std::endl;
 	}
 }
 
 //находит пользователя по логину и возвращает успешность
-bool Chat::FindUser(const std::string& login)
+bool Chat::findUser(const std::string& login)
 {
 	std::vector<User>::iterator usr;
-	for (usr = Users.begin();usr != Users.end();usr++)//движение по списку юзеров с использованием итератора
+	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
 	{
 		std::string tmp = usr->getLogin();
 		if (0 == tmp.compare(login))
@@ -41,10 +36,10 @@ bool Chat::FindUser(const std::string& login)
 }
 
 //находит пользователя по имени и возвращает успешность
-bool Chat::FindUser_by_name(const std::string& name)
+bool Chat::findUserByName(const std::string& name)
 {
 	std::vector<User>::iterator usr;
-	for (usr = Users.begin();usr != Users.end();usr++)//движение по списку юзеров с использованием итератора
+	for (usr = Users.begin();usr != Users.end();++usr)//движение по списку юзеров с использованием итератора
 	{
 		std::string tmp = usr->getName();
 		if (0 == tmp.compare(name))
@@ -56,11 +51,11 @@ bool Chat::FindUser_by_name(const std::string& name)
 }
 
 //Возвращает указатель на пользователя с данным логином
-User* Chat::GetUser(const std::string& login)
+User* Chat::getUser(const std::string& login)
 {
 	std::vector<User>::iterator usr;
 	int i = 0;
-	for (usr = Users.begin();usr != Users.end();i++,usr++)//движение по списку юзеров с использованием итератора
+	for (usr = Users.begin();usr != Users.end(); ++i,++usr)//движение по списку юзеров с использованием итератора
 	{
 		std::string tmp = usr->getLogin();
 		if (0 == tmp.compare(login))
@@ -75,11 +70,11 @@ User* Chat::GetUser(const std::string& login)
 }
 
 //Возвращает указатель на пользователя с данным именем
-User* Chat::GetUser_by_name(const std::string& name)
+User* Chat::getUserByName(const std::string& name)
 {
 	std::vector<User>::iterator usr;
 	int i = 0;
-	for (usr = Users.begin();usr != Users.end();i++, usr++)
+	for (usr = Users.begin();usr != Users.end(); ++i, ++usr)
 	{
 		std::string tmp = usr->getName();
 		if (0 == tmp.compare(name))
@@ -93,10 +88,10 @@ User* Chat::GetUser_by_name(const std::string& name)
 }
 
 //отображает количество сообщений в массивах общих и персоональных сообщений для конкретного пользователя
-void Chat::ChatState(User* usr)
+void Chat::chatState(User* usr)
 {
-	std::cout << "Messages from all users: " << count_allMessages() << std::endl;
-	std::cout << "Personal mesages: " << usr->Count_received_msg() << std::endl;
+	std::cout << "Messages from all users: " << countAllMessages() << std::endl;
+	std::cout << "Personal mesages: " << usr->countReceivedMsg() << std::endl;
 
 }
 
@@ -104,19 +99,19 @@ void Chat::ChatState(User* usr)
 //работа с вектором общих сообщений
 
 //добавляет сообщение в конец вектора общих сообщений
-void Chat::Add_message_to_all(const Message<std::string>& msg_all)
+void Chat::addMessageToAll(const Message<std::string>& msg_all)
 {
 	all_messages.push_back(msg_all);
 }
 
 //подсчитывает количество сообщений в массиве общих сообщений
-const size_t Chat::count_allMessages()
+size_t Chat::countAllMessages() const
 {
 	return all_messages.size();
 }
 
 //вывод текста сообщения по его порядковому номеру в массиве общих сообщений 
-void Chat::Read_msg_in_all(const size_t num_of_msg)
+void Chat::readMsgAll(const size_t num_of_msg)
 {
 	//когда сообщений нет
 	if (all_messages.empty())
@@ -127,7 +122,7 @@ void Chat::Read_msg_in_all(const size_t num_of_msg)
 	{
 		if ((num_of_msg <= all_messages.size()))
 		{			
-			all_messages[num_of_msg - 1].Show_Message();
+			all_messages[num_of_msg - 1].showMessage();
 		}
 		else
 			throw bad_range();
