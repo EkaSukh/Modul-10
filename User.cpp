@@ -1,46 +1,45 @@
 #include "User.h"
 
 
-//РіРµС‚С‚РµСЂС‹ 
+//геттеры 
 std::string User::getName() const { return _name; }
 std::string User::getLogin() const { return _login; }
 
-//СЃСЌС‚С‚РµСЂС‹
+//сэттеры
 void User::setName(const std::string& name) { _name = name; }
 void User::setPass(const std::string& pass) { _password = pass; }
-//РїСЂРѕРІРµСЂРєР° РїР°СЂРѕР»СЏ
+//проверка пароля
 bool User::checkPass(const std::string& psw) { return (0 == psw.compare(_password)); }
 
-//РґРѕР±Р°РІР»РµРЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ РІ РєРѕР»Р»РµРєС†РёСЋ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
+//добавление сообщения в коллекцию персональных сообщений
 void User::addMessageToMyCollection(const Message<std::string>& msg)
 {
 	receivedMessg.push_back(msg);
 }
 
-//РїРѕРґСЃС‡РµС‚ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№ РІ РєРѕР»Р»РµРєС†РёРё
+//подсчет персональных сообщений в коллекции
 size_t User::countReceivedMsg() const
 {
 	return receivedMessg.size();
 }
 
-//С‡С‚РµРЅРёСЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ РёР· РєРѕР»Р»РµРєС†РёРё РїРѕ РїРѕСЂСЏРґРєРѕРІРѕРјСѓ РЅРѕРјРµСЂСѓ СЃРѕРѕР±С‰РµРЅРёСЏ
+//чтения выбранного сообщения из коллекции по порядковому номеру сообщения
 void User::readPersonalMsg(const size_t n)
 {
-	if (receivedMessg.empty())//РЅРµС‚ СЃРѕРѕР±С‰РµРЅРёР№
+	if (receivedMessg.empty())//нет сообщений
 	{
 		std::cout << "There is no messages yet\n";
 	}
-	else//РµСЃС‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ
+	else//есть сообщения
 	{
-		
+
 		if ((n <= receivedMessg.size()))
 		{
-			
-			receivedMessg[n - 1].showMessage(); 
+
+			receivedMessg[n - 1].showMessage();
 		}
 		else
 			throw bad_range();
 
 	}
 }
-
