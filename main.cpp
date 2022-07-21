@@ -1,20 +1,22 @@
-#include "Message.h"
-#include "User.h"
 #include "Interface.h"
 #include "Chat.h"
 #include <iostream>
-#include <vector>
-#include <memory>
+
 
 int main()
 {
-	Interface interface1;//объект интрефэйса
-	std::unique_ptr<Chat> chat1(new Chat); //объект чата
+	Interface interface;//объект интрефэйса
+	Chat chat; //объект чата
 	std::cout << "Welcome to our chat!\n";
+	//восстановление состояния чата из файлов
+	//колекция общих сообщений
+	chat.readFromFile();
+	//состояния пользователей и их персональных коллеций сообщений
+	chat.restoreUsersFromFile();
 
-	while (interface1.Enable(*chat1)) //вход в интерфэйс первого уровня
+	while (interface.Enable(chat)) //вход в интерфэйс первого уровня
 	{
-		while (interface1.StartChat(*chat1))//вход в интерфэйс второго уровня
+		while (interface.startChat(chat))//вход в интерфэйс второго уровня
 			continue;
 	}
 	std::cout << "Thank you for chatting.";

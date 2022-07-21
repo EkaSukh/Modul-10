@@ -1,12 +1,15 @@
 #pragma once
-#include <iostream>
+
 #include <vector>
-#include "Message.h"
+#include <map>
+#include <filesystem>
+#include "User.h"
+
 
 //предварительное объявление явной специализации шаблонного класса Message
 //который входит в объявление класса Chat
 template<> class Message <std::string>;
-template<> class Message <std::string>;
+
 
 //предварительное объявления класса
 //используемого при определении класса Chat
@@ -24,27 +27,31 @@ public:
 	~Chat() {}
 
 	//работа с массивом пользователей
-	void AddUser(const User& usr);
-	void ShowUsers();
-	bool FindUser(const std::string& login);
-	bool FindUser_by_name(const std::string& name);
-	User* GetUser(const std::string& login);
-	User* GetUser_by_name(const std::string& name);
-	
+	void addUser(const User& usr);
+	void showUsers();
+	bool findUser(const std::string& login);
+	bool findUserByName(const std::string& name);
+	User* getUser(const std::string& login);
+	User* getUserByName(const std::string& name);
+	void writeUsersToFile();
+	void restoreUsersFromFile();
+
 	//отражает колличество сообщений в общей и личной коллекции 
 	//для чтения их вошедшим по паролю пользователем user
-	void ChatState(User* usr);
+	void chatState(User* usr);
 
 	//работа с массивом общих сообщений
-	void Add_message_to_all(const Message<std::string>& msg_all);
-	const size_t count_allMessages();
-	void Read_msg_in_all(const size_t num_of_msg);
-		
+	void addMessageToAll(const Message<std::string>& msg_all);
+	size_t countAllMessages() const;
+	void readMsgAll(const size_t num_of_msg);
+	void printToFile();
+	void readFromFile();
+
 
 private:
 	//массив пользователей
-	std::vector<User> Users;
+	std::map <std::string, User> Users;
 
-	//массив общих сообщений, доступных всем пользователям
+	//массив сообщение, доступный всем пользователям
 	std::vector <Message<std::string> > all_messages;
 };

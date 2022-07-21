@@ -1,10 +1,11 @@
 #pragma once
-#include <iostream>
+
 #include <vector>
 #include <exception>
 #include "Message.h"
 
-//класс дл¤ формировани¤ исключений в функции чтени¤ сообщени¤ из вектора персональных сообщений
+
+//класс для формирования исключений в функции чтения сообщений из вектора персональных сообщений
 class bad_range :public std::exception
 {
 public:
@@ -16,45 +17,47 @@ public:
 };
 
 
-//предварительное объ¤вление ¤вной специализации шаблонного класса Message
+//предварительное объявление явной специализации шаблонного класса Message
 //который входит в объ¤вление класса User
 template<> class Message <std::string>;
 
-//класс описывает пользовател¤ чата
+//класс описывает пользователя чата
 class User
 {
 public:
-	//конструкторы
+	//конструкторы 
 	User() {}
 	User(const std::string& login, const std::string& passw, const std::string& name) :
 		_login(login), _password(passw), _name(name) {}
 
-	//деструктор
+	//деструкторы
 	~User() {}
 
-	//гетеры приватных данных
+	//геттеры приватных данных
 	std::string getName() const;
 	std::string getLogin() const;
-	
-	//сетеры приватных переменных
+
+	//сэттеры приватных данных
 	void setName(const std::string& name);
 	void setPass(const std::string& pass);
 
-	//проверка парол¤
+	//проверка пароля
 	bool checkPass(const std::string& psw);
 
-	//работа с коллекцией персональных сообщений
-	void Add_msg_to_my_collection(Message<std::string> & msg);
-	const size_t Count_received_msg();
-	void Read_personal_msg(const size_t n);
+	//работа с коллекцией персоональных сообщений
+	void addMessageToMyCollection(const Message<std::string>& msg);
+	size_t countReceivedMsg() const;
+	void readPersonalMsg(const size_t n);
 
+	//запись и восстановление пользователя из файла
+	friend std::ofstream& operator <<(std::ofstream& os, User& user);
 	
 private:
-	const std::string _login; //константна¤ переменна¤ дл¤ однозначного определени¤ юзера в списке
+	const std::string _login; //константная переменная для однозначного определения юзера в списке
 	std::string _password;
 	std::string _name;
 
-	// коллекци¤ персональных сообщений дл¤ данного юзера
+	// коллекция персоональных сообщений для данного юзера
 	std::vector<Message<std::string> > receivedMessg;
-	
+
 };

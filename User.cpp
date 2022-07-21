@@ -1,33 +1,30 @@
-#include <iostream>
-#include <vector>
-#include "Chat.h"
-#include "Message.h"
 #include "User.h"
 
-//геттеры 
+
+//геттеры
 std::string User::getName() const { return _name; }
 std::string User::getLogin() const { return _login; }
 
-//сэттеры
+//сеттеры
 void User::setName(const std::string& name) { _name = name; }
 void User::setPass(const std::string& pass) { _password = pass; }
 //проверка пароля
 bool User::checkPass(const std::string& psw) { return (0 == psw.compare(_password)); }
 
-//добавление сообщения в коллекцию персональных сообщений
-void User::Add_msg_to_my_collection(Message<std::string>& msg)
+//добавление сообщения в коллекцию персоональных сообщений
+void User::addMessageToMyCollection(const Message<std::string>& msg)
 {
 	receivedMessg.push_back(msg);
 }
 
-//подсчет персональных сообщений в коллекции
-const size_t User::Count_received_msg()
+//подсчет персоональных сообщени в коллекции
+size_t User::countReceivedMsg() const
 {
 	return receivedMessg.size();
 }
 
-//чтения выбранного сообщения из коллекции по порядковому номеру сообщения
-void User::Read_personal_msg(const size_t n)
+//чтение выбранного сообщения из коллекции по персональному номеру сообщения
+void User::readPersonalMsg(const size_t n)
 {
 	if (receivedMessg.empty())//нет сообщений
 	{
@@ -35,11 +32,11 @@ void User::Read_personal_msg(const size_t n)
 	}
 	else//есть сообщения
 	{
-		
+
 		if ((n <= receivedMessg.size()))
 		{
-			
-			receivedMessg[n - 1].Show_Message(); 
+
+			receivedMessg[n - 1].showMessage();
 		}
 		else
 			throw bad_range();
@@ -47,3 +44,21 @@ void User::Read_personal_msg(const size_t n)
 	}
 }
 
+//определение процедуры записи пользователя в файл
+std::ofstream& operator <<(std::ofstream& os, User& user)
+{
+	os << user._login;
+	os << ' ';
+	os << user._password;
+	os << ' ';
+	os << user._name;
+	os << ' ';
+	//записываем количество сообщений в коллекции
+	os << user.countReceivedMsg();
+	os << ' ';
+	//записываем всю коллекцию сообщений
+	for(auto itr = user.receivedMessg.begin(); itr != user.receivedMessg.end(); ++itr)
+	os << *itr;
+
+	return os;
+}
