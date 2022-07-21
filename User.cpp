@@ -1,36 +1,44 @@
 #include "User.h"
 
 
-//геттеры
+
+//Ð³ÐµÑÑÐµÑÑ
 std::string User::getName() const { return _name; }
 std::string User::getLogin() const { return _login; }
 
-//сеттеры
+//ÑÐµÑÑÐµÑÑ
+
 void User::setName(const std::string& name) { _name = name; }
 void User::setPass(const std::string& pass) { _password = pass; }
-//проверка пароля
+//ïðîâåðêà ïàðîëÿ
 bool User::checkPass(const std::string& psw) { return (0 == psw.compare(_password)); }
 
-//добавление сообщения в коллекцию персоональных сообщений
+
+//Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ñ Ð² ÐºÐ¾Ð»Ð»ÐµÐºÑÐ¸Ñ Ð¿ÐµÑÑÐ¾Ð¾Ð½Ð°Ð»ÑÐ½ÑÑ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ð¹
+
 void User::addMessageToMyCollection(const Message<std::string>& msg)
 {
 	receivedMessg.push_back(msg);
 }
 
-//подсчет персоональных сообщени в коллекции
+
+//Ð¿Ð¾Ð´ÑÑÐµÑ Ð¿ÐµÑÑÐ¾Ð¾Ð½Ð°Ð»ÑÐ½ÑÑ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸ Ð² ÐºÐ¾Ð»Ð»ÐµÐºÑÐ¸Ð¸
+
 size_t User::countReceivedMsg() const
 {
 	return receivedMessg.size();
 }
 
-//чтение выбранного сообщения из коллекции по персональному номеру сообщения
+
+//ÑÑÐµÐ½Ð¸Ðµ Ð²ÑÐ±ÑÐ°Ð½Ð½Ð¾Ð³Ð¾ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ñ Ð¸Ð· ÐºÐ¾Ð»Ð»ÐµÐºÑÐ¸Ð¸ Ð¿Ð¾ Ð¿ÐµÑÑÐ¾Ð½Ð°Ð»ÑÐ½Ð¾Ð¼Ñ Ð½Ð¾Ð¼ÐµÑÑ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ñ
+
 void User::readPersonalMsg(const size_t n)
 {
-	if (receivedMessg.empty())//нет сообщений
+	if (receivedMessg.empty())//íåò ñîîáùåíèé
 	{
 		std::cout << "There is no messages yet\n";
 	}
-	else//есть сообщения
+	else//åñòü ñîîáùåíèÿ
 	{
 
 		if ((n <= receivedMessg.size()))
@@ -42,9 +50,10 @@ void User::readPersonalMsg(const size_t n)
 			throw bad_range();
 
 	}
+
 }
 
-//определение процедуры записи пользователя в файл
+//Ð¾Ð¿ÑÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¿ÑÐ¾ÑÐµÐ´ÑÑÑ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð¿Ð¾Ð»ÑÐ·Ð¾Ð²Ð°ÑÐµÐ»Ñ Ð² ÑÐ°Ð¹Ð»
 std::ofstream& operator <<(std::ofstream& os, User& user)
 {
 	os << user._login;
@@ -53,12 +62,13 @@ std::ofstream& operator <<(std::ofstream& os, User& user)
 	os << ' ';
 	os << user._name;
 	os << ' ';
-	//записываем количество сообщений в коллекции
+	//Ð·Ð°Ð¿Ð¸ÑÑÐ²Ð°ÐµÐ¼ ÐºÐ¾Ð»Ð¸ÑÐµÑÑÐ²Ð¾ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ð¹ Ð² ÐºÐ¾Ð»Ð»ÐµÐºÑÐ¸Ð¸
 	os << user.countReceivedMsg();
 	os << ' ';
-	//записываем всю коллекцию сообщений
+	//Ð·Ð°Ð¿Ð¸ÑÑÐ²Ð°ÐµÐ¼ Ð²ÑÑ ÐºÐ¾Ð»Ð»ÐµÐºÑÐ¸Ñ ÑÐ¾Ð¾Ð±ÑÐµÐ½Ð¸Ð¹
 	for(auto itr = user.receivedMessg.begin(); itr != user.receivedMessg.end(); ++itr)
 	os << *itr;
 
 	return os;
 }
+
