@@ -1,8 +1,8 @@
 #include <iostream>
 
 void printWinRelease();
+#if defined (__linux__)//if linux operation system environment 
 
-#if defined (__linux__)
 #include <sys/utsname.h> 
 
 void printVersionLinux() {
@@ -16,13 +16,14 @@ void printVersionLinux() {
        
 }
 
-#elif defined (_WIN32)
+#elif defined (_WIN32)//if Windows operation system environment 
 #include <windows.h>
 #include <VersionHelpers.h>
 void printVersionWind32() {
         std::cout << "Windows 32-bit\n";
         printWinRelease();
 
+        //part for PID
         unsigned long int process_p = GetCurrentProcessId();
         std::cout << "The current process ID is " << process_p << std::endl;
         std::cout << std::endl;
@@ -34,12 +35,14 @@ void printVersionWind64() {
         std::cout << "Windows 64-bit\n";
         printWinRelease();
 
+        //part for PID 
         unsigned long int process_p = GetCurrentProcessId();
         std::cout << "The current process ID is " << process_p << std::endl;
         std::cout << std::endl;
 }
 #endif
 
+//functin to print Windows release version
 void printWinRelease()
 {
     if (IsWindowsServer())
