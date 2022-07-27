@@ -126,7 +126,7 @@ void Chat::printToFile()
 		messages_file << *itr;
 
 	//определяем права доступа к файлу только для владельца
-	std::filesystem::permissions("messages_to_all.txt", std::filesystem::perms::group_all | std::filesystem::perms::others_all, std::filesystem::perm_options::remove);
+	//std::filesystem::permissions("messages_to_all.txt", std::filesystem::perms::group_all | std::filesystem::perms::others_all, std::filesystem::perm_options::remove);
 }
 
 //чтение коллекции общих сообщений из файла
@@ -170,7 +170,7 @@ void Chat::writeUsersToFile()
 		users_file << itr->second;
 
 	//определяем права доступа к файлу только для владельца
-	std::filesystem::permissions("users_file.txt", std::filesystem::perms::group_all | std::filesystem::perms::others_all, std::filesystem::perm_options::remove);
+	//std::filesystem::permissions("users_file.txt", std::filesystem::perms::group_all | std::filesystem::perms::others_all, std::filesystem::perm_options::remove);
 
 }
 

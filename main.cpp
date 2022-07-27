@@ -15,7 +15,7 @@ printVersionWind64();
 
 
 //создание объетов чата
-	Interface interface;//объект интрефэйса
+	Interface interactive_menu;//объект интрефэйса
 	Chat chat; //объект чата
 	std::cout << "Welcome to our chat!\n";
 
@@ -26,9 +26,9 @@ printVersionWind64();
 	chat.restoreUsersFromFile();
 
 //вход в тело чата
-	while (interface.Enable(chat)) //вход в интерфэйс первого уровня
+	while (interactive_menu.Enable(chat)) //вход в интерфэйс первого уровня
 	{
-		while (interface.startChat(chat))//вход в интерфэйс второго уровня
+		while (interactive_menu.startChat(chat))//вход в интерфэйс второго уровня
 			continue;
 	}
 	std::cout << "Thank you for chatting.\n";
